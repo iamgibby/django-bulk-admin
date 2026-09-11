@@ -1,26 +1,40 @@
 from __future__ import unicode_literals
 
 from collections import OrderedDict
+from functools import partial, update_wrapper
+
 from django import forms
 from django.contrib import admin, messages
 from django.contrib.admin.exceptions import DisallowedModelAdminToField
-from django.contrib.admin.options import IS_POPUP_VAR, InlineModelAdmin, TO_FIELD_VAR, csrf_protect_m
-from django.templatetags.static import static
+from django.contrib.admin.options import (
+    IS_POPUP_VAR,
+    TO_FIELD_VAR,
+    InlineModelAdmin,
+    csrf_protect_m,
+)
 from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
 from django.contrib.admin.utils import NestedObjects, flatten_fieldsets
 from django.core.exceptions import PermissionDenied, ValidationError
-from django.core.urlresolvers import reverse
 from django.db import router, transaction
-from django.forms.formsets import DELETION_FIELD_NAME, INITIAL_FORM_COUNT, TOTAL_FORM_COUNT, ManagementForm
-from django.forms.models import modelform_defines_fields, modelformset_factory, BaseModelFormSet
+from django.forms.formsets import (
+    DELETION_FIELD_NAME,
+    INITIAL_FORM_COUNT,
+    TOTAL_FORM_COUNT,
+    ManagementForm,
+)
+from django.forms.models import (
+    BaseModelFormSet,
+    modelform_defines_fields,
+    modelformset_factory,
+)
 from django.forms.utils import ErrorList
 from django.http import HttpResponseRedirect
-from django.template.response import SimpleTemplateResponse
-from django.utils import six
-from django.utils.encoding import force_text
-from django.utils.text import get_text_list
-from django.utils.translation import ugettext as _, ugettext_lazy
-from functools import partial, update_wrapper
+from django.template.response import TemplateResponse  # Replaces SimpleTemplateResponse
+from django.templatetags.static import static
+from django.urls import reverse  # Replaces django.core.urlresolvers.reverse
+from django.utils.text import ListFormat, format_lazy, get_text_list
+from django.utils.translation import gettext as _  # Replaces ugettext
+from django.utils.translation import gettext_lazy  # Replaces ugettext_lazy
 
 import django
 import re
